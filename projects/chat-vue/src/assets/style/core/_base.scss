@@ -2,11 +2,11 @@
 
 // px转rem
 @function pr($px, $base: 32) {
-  @return ($px / $base) * 1rem;
+  @return calc($px / $base) * 1rem;
 }
 // 375 尺寸
 @function pr2($px, $base: 16) {
-  @return ($px / $base) * 1rem;
+  @return calc($px / $base) * 1rem;
 }
 
 // px转百分比

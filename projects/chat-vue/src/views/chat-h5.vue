@@ -164,21 +164,20 @@ function scrollToBottom() {
 
 <style scoped lang="scss">
 .chat-box {
-  height: calc(100vh - 50px);
+  height: 100vh;
   width: 100%;
   background-color: #f2f2f2;
   overflow: hidden;
   overflow-y: scroll;
-  padding: 0;
   .tips {
-    width: 80%;
+    width: 100%;
     text-align: center;
     font-size: pr(20);
     color: #a19f9f;
     padding: 0 0 10px 0;
     flex-direction: row;
     position: fixed;
-    bottom: pr(180);
+    bottom: pr(80);
     background-color: #f2f2f2;
     z-index: 5;
   }
@@ -236,11 +235,11 @@ function scrollToBottom() {
 
   .chat-input-box {
     position: fixed;
-    bottom: 50px;
+    bottom: 0;
     border-top: 1px soild #e2e2e2;
     background-color: #f8f8f8;
     height: pr(88);
-    width: 79%;
+    width: 100%;
     box-sizing: border-box;
     padding: pr(12) pr(24);
     display: flex;
