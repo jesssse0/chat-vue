@@ -47,9 +47,35 @@ const sendCode = (dataObj:object) => {
   })
 }
 
+// 获取用户聊天列表
+const getUserRecordList = (dataObj:object) => {
+  return http.request({
+    url: `/openapi/chat/msg/list`,
+    headers: {
+      isToken: false
+    },
+    method: 'post',
+    data: dataObj
+  })
+}
+
+// 获取聊天详情
+const getRecordDetail = (dataObj:object) => {
+  return http.request({
+    url: `/openapi/chat/msg/detail`,
+    headers: {
+      isToken: false
+    },
+    method: 'post',
+    data: dataObj
+  })
+}
+
 export default {
   login,
   getUserInfo,
   register,
-  sendCode
+  sendCode,
+  getUserRecordList,
+  getRecordDetail
 }

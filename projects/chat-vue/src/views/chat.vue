@@ -4,11 +4,11 @@
         <div v-for="(item, idx) in list" :key="idx">
           <div v-if="item.type === 'answer'" class="dialog-answer">
             <img class="icon-ai" src="../assets/images/chat4.png" />
-            <v-md-preview class="dialog-box" :text="item.text"></v-md-preview>
+            <v-md-preview class="dialog-box" :text="item.content"></v-md-preview>
             <!-- <div >{{ item.text }}</div> -->
           </div>
           <div v-else class="dialog-question">
-            <div class="dialog-box">{{ item.text }}</div>
+            <div class="dialog-box">{{ item.content }}</div>
             <img class="icon-user" src="../assets/images/icon-ai.jpeg" />
           </div>
         </div>
@@ -40,14 +40,21 @@ import { reactive, ref } from 'vue';
 import tools from './utils/tools'
 import { EventSourcePolyfill } from 'event-source-polyfill'
 import api from '../api';
+import { user } from '../store'
 
-const list:Array<{type:string,text:string, id:string}> = reactive([
+const userInfo = user()
+
+let list:Array<{type:string,content:string, id:string}> = reactive([
   {
     type:'answer',
-    text:'作为AI聊天机器人，我可以回答您的任何问题～\n\n1，回答百度问答，知乎提问等提供更高质量的答案 \n\n2，写论文，写脚本，写故事，写代码，文案润色翻译\n\n3，扮演面试官，扮演历史人物等多种角色\n\n 4，智能生成mj关键词。对话前缀加‘mj’\n\n（例：mj 一只大象 动漫风格 ）\n\n例①：我是行政助理，请帮我写一篇工作日报\n\n例②：将下面的内容翻译成英文：xxx\n\n例③：请用鲁迅先生的小说风格写一个故事\n\n例④：请写一个200字的科幻小说',
+    content:'作为AI聊天机器人，我可以回答您的任何问题～\n\n1，回答百度问答，知乎提问等提供更高质量的答案 \n\n2，写论文，写脚本，写故事，写代码，文案润色翻译\n\n3，扮演面试官，扮演历史人物等多种角色\n\n 4，智能生成mj关键词。对话前缀加‘mj’\n\n（例：mj 一只大象 动漫风格 ）\n\n例①：我是行政助理，请帮我写一篇工作日报\n\n例②：将下面的内容翻译成英文：xxx\n\n例③：请用鲁迅先生的小说风格写一个故事\n\n例④：请写一个200字的科幻小说',
     id: ''
   }
 ])
+if(userInfo.messageList.length > 0) {
+  list.length = 0
+  list.push(...userInfo.messageList)
+}
 const qText = ref('')
 
 const chatDialog = ref<any>(null)
@@ -91,7 +98,7 @@ const sendHandel = async function() {
   // 把问题添加到消息队列里
   list.push({
     type:'question',
-    text: qText.value,
+    content: qText.value,
     id: uuid_str
   })
   const baseUrl = 'https://www.xiaoxigo.top/openapi/chat/stream/chat'
@@ -138,13 +145,13 @@ const sendHandel = async function() {
     list.forEach(item => {
       if(item.id === uuid_str && item.type === 'answer') {
         isFlag = true
-        item.text = text.value
+        item.content = text.value
       }
     })
     if(!isFlag) {
       list.push({
         type:'answer',
-        text: text.value,
+        content: text.value,
         id: uuid_str
       })
     }

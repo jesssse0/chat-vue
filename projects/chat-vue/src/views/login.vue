@@ -12,6 +12,8 @@
 <script>
 import api from '@/api';
 import tools from './utils/tools'
+import { mapActions } from 'pinia'
+import { user } from '../store'
 
 export default {
   name: 'Login',
@@ -22,13 +24,14 @@ export default {
         }
     },
     methods: {
+        ...mapActions(user, ['setToken']),
         loginHandle() {
             if (!this.phone || this.phone.length !== 11) {
-                this.$toast('请输入正确格式的手机号')
+                this.$message.error('请输入正确格式的手机号')
                 return
             }
             if (!this.pwd) {
-                this.$toast('请输入密码')
+                this.$message.error('请输入密码')
                 return
             }
             api.user.login({
@@ -37,6 +40,7 @@ export default {
             }).then(res => {
                 if (res.code === 0) {
                     tools.setStore('token', res.data)
+                    this.setToken(res.data)
                     this.$router.push({path: '/chat'});
                 } else {
                     this.$message.error(res.message)
